@@ -13,18 +13,13 @@ function App() {
       element: <>login</>
     },
     {
-      path: "/",
-      element: <>Home</>
-    },
+      path: "/about",
+      element: <>about</>
+    }
 
   ])
-  return (
 
-    <div className='text-zinc-600'>
-      <RouterProvider router={router} />
-      Tailwind Configured
-    </div>
-  )
+  return ( <RouterProvider router={router} /> )
 }
 
 export default App

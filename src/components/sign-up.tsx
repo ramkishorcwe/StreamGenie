@@ -11,7 +11,7 @@ const Signup = () => {
     const password = useRef(null)
     const navigate = useNavigate()
 
-    const handleSignup = async (values)=>{
+    const handleSignup = async (values:any)=>{
         try{
             const result = await createUserWithEmailAndPassword( auth, values.email, values.password)
             console.log(result)
@@ -41,7 +41,7 @@ const Signup = () => {
                         }
                         return errors;
                     }}
-                    onSubmit={(values, {setSubmitting}) => {
+                    onSubmit={(values, {}) => {
                         handleSignup(values)
                         // setTimeout(() => {
                         //     alert(JSON.stringify(values, null, 2));

@@ -14,9 +14,9 @@ import {
     ArrowPathIcon,
     Bars3Icon,
     ChartPieIcon,
-    CursorArrowRaysIcon,
+    // CursorArrowRaysIcon,
     FingerPrintIcon,
-    SquaresPlusIcon,
+    // SquaresPlusIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {ChevronDownIcon, PhoneIcon, PlayCircleIcon} from '@heroicons/react/20/solid'
@@ -66,6 +66,7 @@ function Header() {
     const logoutHandel = async ()=>{
         try{
             const response = await signOut(auth);
+            console.log(response)
             navigate("/login")
         }catch (e) {
             console.log(e)

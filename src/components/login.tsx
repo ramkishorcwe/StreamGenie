@@ -7,8 +7,8 @@ import {useNavigate, Link} from 'react-router-dom'
 
 
 const Login = () => {
-    const emailRef = useRef(null)
-    const passwordRef = useRef(null)
+    const email = useRef(null)
+    const password = useRef(null)
     const navigate = useNavigate()
 
    const handleSubmit = async (values)=>{
@@ -33,11 +33,11 @@ const Login = () => {
                     validate={values => {
                         const errors = {};
                         if (!values.email) {
-                            errors.email = 'Required';
+                            // errors.email = 'Required';
                         } else if (
                             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                         ) {
-                            errors.email = 'Invalid email address';
+                            // errors.email = 'Invalid email address';
                         }
                         return errors;
                     }}
@@ -61,7 +61,7 @@ const Login = () => {
                       }) => (
                         <form onSubmit={handleSubmit}>
                             <input
-                                ref = {emailRef}
+                                ref = {email}
                                 type="email"
                                 name="email"
                                 placeholder="Email"
@@ -72,7 +72,7 @@ const Login = () => {
                             />
                             {errors.email && touched.email && errors.email}
                             <input
-                                ref ={passwordRef}
+                                ref ={password}
                                 type="password"
                                 name="password"
                                 placeholder="Password"

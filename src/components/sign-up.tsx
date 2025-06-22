@@ -1,4 +1,5 @@
 import {Formik} from 'formik';
+import {useRef} from 'react';
 import resource from "../resource";
 import {createUserWithEmailAndPassword} from 'firebase/auth'
 import {auth} from "../services/firebase";
@@ -6,8 +7,8 @@ import {useNavigate, Link} from 'react-router-dom'
 
 
 const Signup = () => {
-    // const emailRef = useRef(null)
-    // const passwordRef = useRef(null)
+    const email = useRef(null)
+    const password = useRef(null)
     const navigate = useNavigate()
 
     const handleSignup = async (values)=>{
@@ -32,11 +33,11 @@ const Signup = () => {
                     validate={values => {
                         const errors = {};
                         if (!values.email) {
-                            errors.email = 'Required';
+                            // errors.email = 'Required';
                         } else if (
                             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                         ) {
-                            errors.email = 'Invalid email address';
+                            // errors.email = 'Invalid email address';
                         }
                         return errors;
                     }}
@@ -60,6 +61,7 @@ const Signup = () => {
                       }) => (
                         <form onSubmit={handleSubmit}>
                             <input
+                                ref={email}
                                 type="email"
                                 name="email"
                                 placeholder="Email"
@@ -70,6 +72,7 @@ const Signup = () => {
                             />
                             {errors.email && touched.email && errors.email}
                             <input
+                                ref = {password}
                                 type="password"
                                 name="password"
                                 placeholder="Password"

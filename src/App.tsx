@@ -3,7 +3,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Login from "./components/login";
 import Home from "./components/home";
-import * as React from "react";
 import Signup from "./components/sign-up";
 
 function App() {

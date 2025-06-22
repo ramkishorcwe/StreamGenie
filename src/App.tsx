@@ -1,16 +1,19 @@
 //router and protected router
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Login from "./components/login";
+import Home from "./components/home";
+import * as React from "react";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <>Home</>
+      element: <Home />
     },
     {
       path: "/login",
-      element: <>login</>
+      element: <Login />
     },
     {
       path: "/about",
@@ -19,7 +22,7 @@ function App() {
 
   ])
 
-  return ( <RouterProvider router={router} /> )
+  return ( <RouterProvider router={router} />)
 }
 
 export default App

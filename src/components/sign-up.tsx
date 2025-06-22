@@ -1,20 +1,19 @@
-import {useRef} from 'react';
 import {Formik} from 'formik';
 import resource from "../resource";
-import {signInWithEmailAndPassword} from 'firebase/auth'
+import {createUserWithEmailAndPassword} from 'firebase/auth'
 import {auth} from "../services/firebase";
 import {useNavigate, Link} from 'react-router-dom'
 
 
-const Login = () => {
-    const emailRef = useRef(null)
-    const passwordRef = useRef(null)
+const Signup = () => {
+    // const emailRef = useRef(null)
+    // const passwordRef = useRef(null)
     const navigate = useNavigate()
 
-   const handleSubmit = async (values)=>{
+    const handleSignup = async (values)=>{
         try{
-            const result = await signInWithEmailAndPassword( auth, values.email, values.password)
-                console.log(result)
+            const result = await createUserWithEmailAndPassword( auth, values.email, values.password)
+            console.log(result)
             navigate("/")
         }catch (e) {
             console.log(e)
@@ -25,7 +24,7 @@ const Login = () => {
         <div className="min-h-screen flex flex-col items-center justify-center bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/8200f58…ve_9cbc87b2-d9bb-4fa8-9f8f-a4fe8fc72545_large.jpg')]">
             <div className="p-10 max-w-md min-h-fit bg-gray-900 text-white p-6 rounded-sx opacity-70 shadow-lg">
                 <h1 className="text-2xl font-bold mb-6 text-gray-800 text-white">
-                    {resource.signInHeadingText}
+                    {resource.signUpHeadingText}
                 </h1>
                 <Formik
                     className="space-y-4 max-w-md"
@@ -42,7 +41,7 @@ const Login = () => {
                         return errors;
                     }}
                     onSubmit={(values, {setSubmitting}) => {
-                        handleSubmit(values)
+                        handleSignup(values)
                         // setTimeout(() => {
                         //     alert(JSON.stringify(values, null, 2));
                         //     setSubmitting(false);
@@ -61,7 +60,6 @@ const Login = () => {
                       }) => (
                         <form onSubmit={handleSubmit}>
                             <input
-                                ref = {emailRef}
                                 type="email"
                                 name="email"
                                 placeholder="Email"
@@ -72,7 +70,6 @@ const Login = () => {
                             />
                             {errors.email && touched.email && errors.email}
                             <input
-                                ref ={passwordRef}
                                 type="password"
                                 name="password"
                                 placeholder="Password"
@@ -83,14 +80,13 @@ const Login = () => {
 
                             />
                             {errors.password && touched.password && errors.password}
-
                             <div>
                                 <button type="submit" disabled={isSubmitting}
                                         className="bg-blue-600 my-4 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
-                                    Submit
+                                    {resource.signUpHeadingText}
                                 </button>
-                                <Link to={"/sign-up"}>
-                                    Signup
+                                <Link to={"/login"}>
+                                    Signin
                                 </Link>
                             </div>
                         </form>
@@ -100,4 +96,4 @@ const Login = () => {
         </div>
     )
 }
-export default Login;
+export default Signup;

@@ -1,5 +1,6 @@
 
  const resource = {
-    signHeadingText: "Sign In"
+    signInHeadingText: "Sign In",
+     signUpHeadingText: "Sign up"
 }
  export default resource;

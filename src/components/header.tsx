@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {
     Dialog,
     DialogPanel,
@@ -20,13 +20,13 @@ import {
     XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {ChevronDownIcon, PhoneIcon, PlayCircleIcon} from '@heroicons/react/20/solid'
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import {auth} from "../services/firebase";
+import {useNavigate} from 'react-router-dom'
 
 const products = [
     {name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon},
-    {name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon},
     {name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon},
-    {name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon},
-    {name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon},
     {name: 'Login', description: 'Build strategic funnels that will convert', href: '/login', icon: ArrowPathIcon},
 
     // <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -42,12 +42,40 @@ const callsToAction = [
 ]
 
 function Header() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+    useEffect(()=>{
+        function checkLoggedIn() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // ✅ User is signed in
+                    console.log("Logged in:", user);
+                    setIsLoggedIn(true); // or return user info
+                } else {
+                    // ❌ User is signed out
+                    console.log("Not logged in");
+                    setIsLoggedIn(false);
+                }
+            });
+        }
+        checkLoggedIn()
+
+    },[])
+
+    const logoutHandel = async ()=>{
+        try{
+            const response = await signOut(auth);
+            navigate("/login")
+        }catch (e) {
+            console.log(e)
+        }
+    }
 
     return (
         <header className="bg-white">
             <nav aria-label="Global" className="mx-auto flex max-w-9xl items-center justify-between p-4">
-                <div className="flex lg:flex-1">
+                <div className="flex lg:flex-1 logo">
                     <a href="#" className="-m-1.5 p-1.5">
                         <span className="sr-only">Your Company</span>
                         <img
@@ -68,11 +96,11 @@ function Header() {
                         <Bars3Icon aria-hidden="true" className="size-6"/>
                     </button>
                 </div>
-                <PopoverGroup className="hidden lg:flex lg:gap-x-12 cursor-pointer">
+                <PopoverGroup className="hidden  lg:flex lg:gap-x-12 cursor-pointer">
                     <Popover className="relative">
                         <PopoverButton className="flex items-center font-semibold text-gray-900">
                             <div className="flex items-center gap-x-6">
-                                <img alt=""
+                                <img alt="..."
                                      src={"https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
                                      className="size-12 rounded-full"/>
                             </div>
@@ -80,7 +108,7 @@ function Header() {
 
                         <PopoverPanel
                             transition
-                            className="absolute top-full -left-8 z-50 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+                            className="absolute top-full -right-8 z-50 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
                         >
                             <div className="p-4">
                                 {products.map((item) => (
@@ -102,6 +130,11 @@ function Header() {
                                         </div>
                                     </div>
                                 ))}
+                                <button
+                                    className=" bg-gray-200 group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
+                                    onClick={isLoggedIn?logoutHandel: ()=>navigate("/login")}>
+                                    {isLoggedIn?"Logout": "Log in"}
+                                </button>
                             </div>
                             <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                                 {callsToAction.map((item) => (
@@ -194,7 +227,7 @@ function Header() {
                                     href="#"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                                 >
-                                    Log in
+                                    {isLoggedIn?"Logout": "Log in"}
                                 </a>
                             </div>
                         </div>

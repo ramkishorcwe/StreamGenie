@@ -127,6 +127,7 @@ const Login = () => {
             </form>
           )}
         </Formik>
+          <Link to={"/forgotten-password"}>Forgotten Password</Link>
       </div>
     </div>
   );

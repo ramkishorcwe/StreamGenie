@@ -1,18 +1,20 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Formik } from "formik";
 import resource from "../resource";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../store/logged-in-user";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout } from "../store/logged-in-user";
 import type { IAuthState } from "../store/logged-in-user";
+import type { IStore } from "../store/store";
 
 const Login = () => {
-  const email = useRef(null);
+  const email = useRef(null); 
   const password = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((store:IStore)=>store.user)
 
   const handleSubmit = async (values: any) => {
     const loggedInUser: IAuthState = {
@@ -51,6 +53,16 @@ const Login = () => {
       dispatch(login(loggedInUser))
     }
   };
+
+  useEffect(()=>{
+      if(loggedInUser.user && loggedInUser.user.uid){
+    navigate("/")
+  }
+  },[])
+
+  if(loggedInUser.user && loggedInUser.user.uid){
+    navigate("/")
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/8200f58…ve_9cbc87b2-d9bb-4fa8-9f8f-a4fe8fc72545_large.jpg')]">

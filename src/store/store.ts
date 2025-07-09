@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userSlice from './logged-in-user'
+import userSlice, { type IAuthState } from './logged-in-user'
+
+export interface IStore{
+  user: IAuthState;
+}
 
 export const store = configureStore({
   reducer: {
-    userSlice: userSlice
+    user: userSlice
 },
 })
 

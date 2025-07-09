@@ -45,22 +45,24 @@ function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
-    useEffect(()=>{
-        function checkLoggedIn() {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    // ✅ User is signed in
-                    console.log("Logged in:", user);
-                    setIsLoggedIn(true); // or return user info
-                } else {
-                    // ❌ User is signed out
-                    console.log("Not logged in");
-                    setIsLoggedIn(false);
+    const checkLoggedIn =  async () => {
+        await onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // ✅ User is signed in
+                console.log("Logged in:", user);
+                setIsLoggedIn(true); // or return user info
+                if(!user){
+                    navigate("/login")
                 }
-            });
-        }
+            } else {
+                // ❌ User is signed out
+                console.log("Not logged in");
+                setIsLoggedIn(false);
+            }
+        });
+    }
+    useEffect(()=>{
         checkLoggedIn()
-
     },[])
 
     const logoutHandel = async ()=>{

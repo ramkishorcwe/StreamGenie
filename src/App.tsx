@@ -4,15 +4,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/login";
 import Home from "./components/home";
 import Signup from "./components/sign-up";
-<<<<<<< Updated upstream
 import ForgottenPassword from "./components/forgotten-password";
-=======
 import { useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/logged-in-user";
 import type { IStore } from "./store/store";
->>>>>>> Stashed changes
 
 function App() {
   const router = createBrowserRouter([
@@ -30,21 +27,16 @@ function App() {
     },
     {
       path: "/about",
-<<<<<<< Updated upstream
       element: <>about</>
     },
     {
       path: "/forgotten-password",
       element: <ForgottenPassword />
-    }
-=======
-      element: <>about</>,
     },
   ]);
   const dispatch = useDispatch();
   useEffect(() => {
     const auth = getAuth();
->>>>>>> Stashed changes
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {

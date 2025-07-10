@@ -5,24 +5,30 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "../store/logged-in-user";
+import { login } from "../store/logged-in-user";
 import type { IAuthState } from "../store/logged-in-user";
 import type { IStore } from "../store/store";
+import CustomError from "./error/custom-error";
+import { toggleLoading } from "../store/loading";
 
 const Login = () => {
   const email = useRef(null); 
   const password = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((store:IStore)=>store.user)
+  const user = useSelector((store:IStore)=>store.user)
+    const loading = useSelector((store:IStore)=>store.loading)
+  const error =  useSelector((store:IStore)=>store.error)
+
+  if(error.message){
+    return(<CustomError message={error.message}/>)
+  }
+    if(loading.status){
+    return(<>Loading...................</>)
+  }
 
   const handleSubmit = async (values: any) => {
-    const loggedInUser: IAuthState = {
-        user:null,
-        error:null,
-        loading: true
-      };
-      dispatch(login(loggedInUser));
+       dispatch(toggleLoading());
     try {
       const result = await signInWithEmailAndPassword(
         auth,
@@ -30,44 +36,44 @@ const Login = () => {
         values.password
       );
       const {uid, displayName, email, photoURL} = result.user;
-      const loggedInUser: IAuthState = {
+      const loggedInUserWithData: IAuthState = {
         user: {
           uid: uid,
           email: email,
           displayName: displayName,
           photoURL: photoURL,
-        },
-        error:null,
-        loading: false
+        }
       };
-      dispatch(login(loggedInUser));
+      dispatch(login(loggedInUserWithData));
     //   console.log(result.user);
       navigate("/");
-    } catch (e) {
+    } catch (e:any) {
       console.log(e);
        const loggedInUser: IAuthState = {
         user: null,
-        error: "",
-        loading: false
       };
       dispatch(login(loggedInUser))
+            navigate("/login");
+    }
+    finally{
+       dispatch(toggleLoading());
     }
   };
 
   useEffect(()=>{
-      if(loggedInUser.user && loggedInUser.user.uid){
+      if(user && user.user?.uid){
     navigate("/")
   }
   },[])
 
-  if(loggedInUser.user && loggedInUser.user.uid){
+  if(user && user.user?.uid){
     navigate("/")
   }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/8200f58…ve_9cbc87b2-d9bb-4fa8-9f8f-a4fe8fc72545_large.jpg')]">
-      <div className="p-10 max-w-md min-h-fit bg-gray-900 text-white p-6 rounded-sx opacity-70 shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800 text-white">
+      <div className="p-10 max-w-md min-h-fit bg-gray-900 text-white rounded-sx opacity-70 shadow-lg">
+        <h1 className="text-2xl font-bold mb-6 text-white">
           {resource.signInHeadingText}
         </h1>
         <Formik

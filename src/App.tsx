@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/logged-in-user";
-import type { IStore } from "./store/store";
+import {  type IStore } from "./store/store";
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +35,8 @@ function App() {
     },
   ]);
   const dispatch = useDispatch();
+    // const selector = useSelector((store: IStore)=>store.user.user);
+    // console.log(selector);
   useEffect(() => {
     const auth = getAuth();
 
@@ -52,7 +54,7 @@ function App() {
           loading: false,
           error: null
         };
-
+            console.log("Changes reflect")
         // Dispatch Redux login
         dispatch(login(tempUser));
       } else {
@@ -63,8 +65,8 @@ function App() {
     return () => unsubscribe();
   }, [dispatch]);
 
-  const loading = useSelector((state: IStore) => state.user.loading);
-if (loading) return <div>Loading...</div>;
+  const loading = useSelector((state: IStore) => state.loading);
+if (loading.status) return <div>Loading...</div>;
 
   return <RouterProvider router={router} />;
 }

@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../services/firebase"; // 👈 update this path to your firebase config
+import { Link } from "react-router-dom";
 
 const ForgottenPassword = () => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState({ type: "", text: "" });
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
         try {
             await sendPasswordResetEmail(auth, email);
             setMessage({ type: "success", text: "Reset link sent to your email." });
-        } catch (error) {
+        } catch (error:any) {
             setMessage({ type: "error", text: error.message });
         }
     };
@@ -57,9 +58,9 @@ const ForgottenPassword = () => {
                 </form>
 
                 <div className="text-center mt-4">
-                    <a href="/login" className="text-blue-600 hover:underline text-sm">
+                    <Link to="/login" className="text-blue-600 hover:underline text-sm">
                         Back to Login
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

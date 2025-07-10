@@ -1,10 +1,14 @@
+import { useSelector } from "react-redux";
 import Header from "./header";
-import {useEffect} from "react";
+// import {useEffect} from "react";
+import type { IStore } from "../store/store";
 
 const Home = ()=>{
-    useEffect(()=>{
+      const selector = useSelector((store: IStore)=>store.user);
+    console.log(selector);
+    // useEffect(()=>{
 
-    },[])
+    // },[])
 
     return(<>
         <Header />

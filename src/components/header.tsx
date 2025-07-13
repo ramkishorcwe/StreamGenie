@@ -51,19 +51,15 @@ const products = [
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const selector = useSelector((store: IStore)=>store.user);
-  // const {displayName,email} = selector.user;
-  // const isLoggedIn: null|boolean = useRef(null)
-  // isLoggedIn.current = email?true:false
   const isLoggedIn = useSelector((state: IStore)=>state.user.user?.email)
+   const tempUser = useSelector((state: IStore)=>state.user.user)
   const navigate = useNavigate();
 
   const logoutHandel = async () => {
     try {
       const response = await signOut(auth);
       console.log(response);
-      navigate("/login");
+      // navigate("/login");
     } catch (e) {
       console.log(e);
     }
@@ -78,7 +74,7 @@ function Header() {
   ];
 
   return (
-    <header className="bg-white">
+    <header className="bg-gray-200">
       <nav
         aria-label="Global"
         className="mx-auto flex max-w-9xl items-center justify-between p-4"
@@ -122,7 +118,7 @@ function Header() {
               transition
               className="absolute top-full -right-8 z-50 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
-              <div className="p-4">
+              {/* <div className="p-4">
                 {products.map((item) => (
                   <div
                     key={item.name}
@@ -144,9 +140,10 @@ function Header() {
                       </a>
                       <p className="mt-1 text-gray-600">{item.description}</p>
                     </div>
-                  </div>
+                  </div>      
                 ))}
-              </div>
+              </div> */}
+              {isLoggedIn?<>{tempUser?.email+ " " + tempUser?.displayName}</>:<>First LoggedIn</>}
               <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                 {callsToAction.map((item) => (
                   <button

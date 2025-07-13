@@ -10,6 +10,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/logged-in-user";
 import {  type IStore } from "./store/store";
+import LoadingPage from "./components/loading";
 
 function App() {
   const router = createBrowserRouter([
@@ -66,7 +67,7 @@ function App() {
   }, [dispatch]);
 
   const loading = useSelector((state: IStore) => state.loading);
-if (loading.status) return <div>Loading...</div>;
+if (loading.status) return <div>{<LoadingPage />}</div>;
 
   return <RouterProvider router={router} />;
 }

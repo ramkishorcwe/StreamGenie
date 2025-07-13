@@ -10,6 +10,7 @@ import type { IAuthState } from "../store/logged-in-user";
 import type { IStore } from "../store/store";
 import CustomError from "./error/custom-error";
 import { toggleLoading } from "../store/loading";
+import { setError, type IError } from "../store/error";
 
 const Login = () => {
   const email = useRef(null); 
@@ -17,15 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store:IStore)=>store.user)
-    const loading = useSelector((store:IStore)=>store.loading)
   const error =  useSelector((store:IStore)=>store.error)
-
-  if(error.message){
-    return(<CustomError message={error.message}/>)
-  }
-    if(loading.status){
-    return(<>Loading...................</>)
-  }
 
   const handleSubmit = async (values: any) => {
        dispatch(toggleLoading());
@@ -49,11 +42,13 @@ const Login = () => {
       navigate("/");
     } catch (e:any) {
       console.log(e);
-       const loggedInUser: IAuthState = {
-        user: null,
+       const error: IError = {
+        code: 401,
+        message: e.code,
+        componant: "login"
       };
-      dispatch(login(loggedInUser))
-            navigate("/login");
+      dispatch(setError(error))
+            // navigate("/login");
     }
     finally{
        dispatch(toggleLoading());
@@ -71,6 +66,10 @@ const Login = () => {
   }
 
   return (
+    <>
+      {error.message&&
+    (<CustomError message={error.message}/>)
+  }
     <div className="min-h-screen flex flex-col items-center justify-center bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/8200f58…ve_9cbc87b2-d9bb-4fa8-9f8f-a4fe8fc72545_large.jpg')]">
       <div className="p-10 max-w-md min-h-fit bg-gray-900 text-white rounded-sx opacity-70 shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-white">
@@ -148,6 +147,7 @@ const Login = () => {
           <Link to={"/forgotten-password"}>Forgotten Password</Link>
       </div>
     </div>
+    </>
   );
 };
 export default Login;

@@ -2,18 +2,21 @@ import { configureStore } from '@reduxjs/toolkit'
 import userSlice, { type IAuthState } from './logged-in-user'
 import errorSlice, { type IError } from './error';
 import  loadingSlice, { type ILoading } from './loading';
+import  moviesSlice, { type IMovies } from './movies';moviesSlice
 
 export interface IStore{
   user: IAuthState;
   error: IError;
-  loading: ILoading
+  loading: ILoading;
+  movies: IMovies;
 }
 
 export const store = configureStore({
   reducer: {
     user: userSlice,
     error: errorSlice,
-    loading: loadingSlice
+    loading: loadingSlice,
+    movies: moviesSlice
 },
 })
 

@@ -7,8 +7,8 @@ export interface IError{
     componant: string | null;
 }
 
-const initialState:IError = {
-      code: null,
+const initialState: IError = {
+    code: null,
     message: null,
     componant: null
 

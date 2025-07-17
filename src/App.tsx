@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "./store/logged-in-user";
 import {  type IStore } from "./store/store";
 import LoadingPage from "./components/loading";
+import AllMovie from "./components/all-movie";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,6 +34,10 @@ function App() {
     {
       path: "/forgotten-password",
       element: <ForgottenPassword />
+    },
+      {
+      path: "/movies/:id",
+      element: <><AllMovie /></>
     },
   ]);
   const dispatch = useDispatch();

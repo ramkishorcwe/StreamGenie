@@ -1,36 +1,70 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "./header";
 import type { IStore } from "../store/store";
-import useFetchMovie from "./custom-hook/fetch-movie";
+// import fetchMovie from "./custom-hook/fetch-movie";
 import MoviesList from "./movie-list";
-import HeroVideo from "./hero-video";
-import type { IMovie } from "../store/movies";
+import type { IMovie, IMovies } from "../store/movies";
+// import HeroContainer from "./hero-video";
+import { useEffect } from "react";
+import { setMovies } from "../store/movies";
+import resource from "../resource";
 
-export interface IAllMovie{
-  "Now Playing": IMovie[]
-  "Popular": IMovie[]
+export interface IAllMovie {
+  "Now Playing": IMovie[];
+  Popular: IMovie[];
+  "Top Rated": IMovie[];
 }
 
 const Home = () => {
-  useFetchMovie();
-  const nowPlaying:IMovie[] = useSelector((store:IStore)=>store.movies.nowPlaying)
-  const popular : IMovie[] = useSelector((store:IStore)=>store.movies.nowPlaying)
-  const movies: IAllMovie = {
-  "Now Playing": nowPlaying,
-  Popular: popular
-  }
+  const dispatch = useDispatch();
+  const movies:any = useSelector((store: IStore) => store.movies);
+
+  useEffect(() => {
+    resource.endPoints.forEach((endPoint:string)=>{
+    fetchMovies(endPoint)
+    })
+  }, []);
+  const fetchMovies = async (uri: string) => {
+    const fullUrl = `${import.meta.env.VITE_BASE_URI}${uri}`;
+    try {
+      const response = await fetch(fullUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_ACCESS_TOKEN}`,
+        },
+      });
+      const movies: any = await response.json();
+      const payloadToSetStore = {
+            page: movies.page,
+            results: [...movies.results],
+            total_pages: movies["total_pages"],
+            total_results: movies["total_results"]
+      }
+      const catagreeNameKey: string[] = uri.split("/");
+      dispatch(
+        setMovies({
+          [catagreeNameKey[catagreeNameKey.length - 1]]: payloadToSetStore,
+        })
+      );
+    } catch (error) {
+      return error;
+    }
+  };
+
   return (
-    <div>
+    // <div className="bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/7d2359a4-434f-4efa-9ff3-e9d38a8bde7f/web/IN-en-20250707-TRIFECTA-perspective_4faa9280-a2c5-4e07-aafc-a45ce43fea09_large.jpg')] opacity-100">
+    <div className="bg-[url('https://plus.unsplash.com/premium_photo-1668473366952-45f06fbf6492')] opacity-100">
       <Header />
-      <HeroVideo
-        title={"Title"}
-        description={"Description"}
-        id={"-SFcIUEvNOQ"}
-      />
-      <div className="absolute w-[97%]">
+      {/* <HeroContainer /> */}
+      <div className="w-[97%]">
         {Object.keys(movies).map((listType: string) => (
-          <MoviesList key={listType} title={listType} list={movies[`${listType}`]} />
-        ))}      
+          <MoviesList
+            key={listType}
+            title={listType}
+            list={movies[`${listType}`].results}
+          />
+        ))}
       </div>
     </div>
   );

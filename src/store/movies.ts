@@ -18,25 +18,54 @@ export interface IMovie {
   vote_count: number;
 }
 
+export interface IPayload {
+  "now-playing"?: ICatagreeResponse;
+  "popular"?: ICatagreeResponse;
+  "top-rated"?: ICatagreeResponse;
+  "upcoming"?: ICatagreeResponse;
+}
+export type IMovieKeys = keyof IPayload;
 export interface IMovies {
-  nowPlaying: IMovie[];
+  "now_playing": ICatagreeResponse;
+  "popular": ICatagreeResponse;
+  "top_rated": ICatagreeResponse;
+  "upcoming": ICatagreeResponse;
+}
+const shampleMovieData = {
+    page: 1,
+  results: [],
+  total_pages: 0,
+  total_results: 0
 }
 
 const initialState: IMovies = {
-  nowPlaying: [],
+  "now_playing": shampleMovieData,
+  "popular": shampleMovieData,
+  "top_rated": shampleMovieData,
+  "upcoming": shampleMovieData,
 };
+
+export interface ICatagreeResponse {
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
 
 export const moviesSlice = createSlice({
   name: "movies",
   initialState,
   reducers: {
-    setNowPlayingMovies: (state, action: PayloadAction<IMovies>) => {
-      state.nowPlaying = action.payload.nowPlaying;
+    //  movies/setMovies
+    setMovies: (movies: IMovies, action: PayloadAction<IPayload>) => {
+      return {
+        ...movies,
+        ...action.payload,
+      };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setNowPlayingMovies } = moviesSlice.actions;
-
+export const { setMovies } = moviesSlice.actions;
 export default moviesSlice.reducer;

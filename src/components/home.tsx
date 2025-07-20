@@ -1,15 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./header";
 import type { IStore } from "../store/store";
-// import fetchMovie from "./custom-hook/fetch-movie";
 import MoviesList from "./movie-list";
-<<<<<<< Updated upstream
-import type { IMovie, IMovies } from "../store/movies";
 import HeroContainer from "./hero-video";
-=======
 import type { IMovie } from "../store/movies";
-// import HeroContainer from "./hero-video";
->>>>>>> Stashed changes
 import { useEffect } from "react";
 import { setMovies } from "../store/movies";
 import resource from "../resource";

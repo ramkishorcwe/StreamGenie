@@ -76,6 +76,13 @@ const CustomSearch = ({
     let finalArr: any = (await Promise.all(allResultArr)).flat();
     setstate([...finalArr]);
   };
+
+    const handleKeyDown = (e:any) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="flex gap-2 m-5">
       <Modal
@@ -93,9 +100,10 @@ const CustomSearch = ({
         placeholder="Write movie type here for best result"
         className="w-[96%] p-2 border-gray-400 border-2 rounded-tl-md rounded-bl-md"
         ref={inputRef}
+        onKeyDown={handleKeyDown}
       />
       <button
-        className="p-4 bg-transparent text-black font-lg border-gray-400 border-2 rounded-tr-md rounded-br-md "
+        className="p-4 bg-transparent text-black font-lg border-gray-400 border-2 rounded-tr-md rounded-br-md cursor-pointer  hover:bg-[rgba(67,92,97,0.1)]"
         onClick={handleSearch}
       >
         {<IoSearchOutline />}

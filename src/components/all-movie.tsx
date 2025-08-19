@@ -3,13 +3,17 @@ import Movie from "./movie";
 import { useSelector } from "react-redux";
 // import type { IStore } from "../store/store";
 import Pagination from "./pagination";
+import { useState } from "react";
 
 const AllMovie = () => {
   const location: any[] = window.location.pathname.split("/");
   const allMovies = useSelector(
     (store: any) => store.movies[location[location.length - 1]]
   );
-  console.log(allMovies);
+  const [isShowAll, setIsShowAll] = useState(false)
+  const buttonText = !isShowAll?"Show All":"Show Less";
+  const showVideosInRow = 6
+  // console.log(allMovies);
   
   return (
     <>
@@ -19,9 +23,10 @@ const AllMovie = () => {
       {allMovies.results && allMovies.results.length > 0 ? (
         <div className="flex flex-wrap">
           {allMovies.results.length > 0 &&
-            allMovies.results.map((movie: any) => (
-              <Movie key={movie.id} className={"min-w-fit"} movie={movie} />
-            ))}
+            allMovies.results.map((movie: any, index:number) => {
+              if(index+1<showVideosInRow*2 || isShowAll)
+               return <Movie key={movie.id} className={"min-w-fit"} movie={movie} />
+})}
         </div>
       ) : (
         <div className="flex gap-5">
@@ -30,7 +35,8 @@ const AllMovie = () => {
           ))}
         </div>
       )}
-      <Pagination pageNo={allMovies.page} apiEndPint={location[location.length - 1]} />
+      <button onClick={()=>setIsShowAll(!isShowAll)}>{buttonText}</button>
+      <Pagination pageNo={allMovies.page} apiEndPint={location[location.length - 1]}  totalPages={allMovies.total_pages}/>
     </>
   );
 };

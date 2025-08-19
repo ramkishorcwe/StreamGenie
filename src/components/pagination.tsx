@@ -7,9 +7,10 @@ import resource from "../resource";
 export interface IPaginationProps {
   apiEndPint: string;
   pageNo: number;
+  totalPages: number;
 }
 
-const Pagination = ({ pageNo = 1, apiEndPint }: IPaginationProps) => {
+const Pagination = ({ pageNo = 1, apiEndPint, totalPages=100 }: IPaginationProps) => {
   const endPoint: string | undefined = resource.endPoints.find(
     (tempEndPoint: string) => tempEndPoint.includes(apiEndPint)
   );
@@ -51,16 +52,17 @@ const Pagination = ({ pageNo = 1, apiEndPint }: IPaginationProps) => {
   };
 
   return (
-    <div className="flex align-middle justify-center gap-5 absolute bottom-[10px] left-0 right-0">
+    <div className="flex align-middle justify-center gap-5 left-0 right-0">
       <Button
-        className={"border-1 p-2 rounded-md cursor-pointer"}
+        className={"border-1 p-2 rounded-md cursor-pointer bg-red-600"}
         onClick={() => fetchMovies(pageNo - 1)}
       >
         Prev
       </Button>
-      <p className={"p-2 rounded-md"}>{pageNo}</p>
+      <span className={"p-2 rounded-md"}>{pageNo}...</span>
+      <span className={"p-2 rounded-md"}>{totalPages}</span>
       <Button
-        className={"border-1 p-2 rounded-md cursor-pointer"}
+        className={"border-1 p-2 rounded-md cursor-pointer bg-red-600"}
         onClick={() => fetchMovies(pageNo + 1)}
       >
         Next

@@ -12,6 +12,7 @@ import { login, logout } from "./store/logged-in-user";
 import {  type IStore } from "./store/store";
 import LoadingPage from "./components/loading";
 import AllMovie from "./components/all-movie";
+import VideoPlayer from "./components/video-player";
 
 function App() {
   const router = createBrowserRouter([
@@ -39,6 +40,10 @@ function App() {
       path: "/movies/:id",
       element: <><AllMovie /></>
     },
+     {
+      path: "/video-player/:id",
+      element: <><VideoPlayer /></>
+    }
   ]);
   const dispatch = useDispatch();
     // const selector = useSelector((store: IStore)=>store.user.user);

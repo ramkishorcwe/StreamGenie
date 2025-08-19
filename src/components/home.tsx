@@ -4,9 +4,10 @@ import type { IStore } from "../store/store";
 import MoviesList from "./movie-list";
 import HeroContainer from "./hero-video";
 import type { IMovie } from "../store/movies";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setMovies } from "../store/movies";
 import resource from "../resource";
+import CustomSearch from "./custom-search";
 
 export interface IAllMovie {
   "Now Playing": IMovie[];
@@ -15,8 +16,13 @@ export interface IAllMovie {
 }
 
 const Home = () => {
+  const [isSearch, SetIsSearch] = useState(false);
   const dispatch = useDispatch();
   const movies: any = useSelector((store: IStore) => store.movies);
+
+  const toggleModalOpenClose = (status:boolean)=>{
+    SetIsSearch(status)
+  }
 
   useEffect(() => {
     resource.endPoints.forEach((endPoint: string) => {
@@ -55,6 +61,7 @@ const Home = () => {
     // <div className="bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/7d2359a4-434f-4efa-9ff3-e9d38a8bde7f/web/IN-en-20250707-TRIFECTA-perspective_4faa9280-a2c5-4e07-aafc-a45ce43fea09_large.jpg')] opacity-100">
     <div className="bg-[url('https://plus.unsplash.com/premium_photo-1668473366952-45f06fbf6492')] opacity-100">
       <Header />
+      <CustomSearch  isSearch={isSearch} toggleModalOpenClose={toggleModalOpenClose}/>
       <HeroContainer />
       <div className="w-[97%]">
         {Object.keys(movies).map((listType: string) => (

@@ -4,22 +4,25 @@ import {
   PopoverGroup,
   PopoverPanel,
 } from "@headlessui/react";
-import {
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import {
-  PlayCircleIcon,
-} from "@heroicons/react/20/solid";
-import { signOut } from "firebase/auth";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { PlayCircleIcon } from "@heroicons/react/20/solid";
+import { signOut, updateProfile, getAuth, updateEmail } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { IStore } from "../store/store";
 import Logo from "./logo";
+import { useState } from "react";
 
 function Header() {
   const isLoggedIn = useSelector((state: IStore) => state.user.user?.email);
   const tempUser = useSelector((state: IStore) => state.user.user);
+  const [edit, setIsEdit] = useState(false);
+  const [formValues,setFormValues] = useState({
+    name:'',
+    url: '',
+    email:''
+  })
   const navigate = useNavigate();
 
   const logoutHandel = async () => {
@@ -30,11 +33,44 @@ function Header() {
     }
   };
 
+  const onChangeHandle = (e:any)=>{
+    setFormValues({...formValues,[e.target.name]: e.target.value})
+  }
+
+  const handleUpdateUser = async()=>{
+    const newAuth = getAuth();
+    if (newAuth.currentUser){
+        try {
+          const data = await Promise.all([updateProfile(newAuth.currentUser, {
+        displayName: formValues.name,
+        photoURL: formValues.url,
+      })])
+      await updateEmail(newAuth.currentUser,formValues.email);
+      console.log(data)
+          
+        } catch (error) {
+          console.log(error)
+        }
+    }
+  }
+
+  const handleEdit = () => {
+    setIsEdit(true);
+    setFormValues({
+      name:tempUser?.displayName??"",
+      url: tempUser?.photoURL??"",
+      email:tempUser?.email??''
+    })
+
+
+    // import { getAuth,  } from "firebase/auth";
+  };
+
   function handleLogin() {
     navigate("/login");
   }
   const callsToAction = [
-    { name: "Watch demo", onClickHandle: handleLogin, icon: PlayCircleIcon },
+    { name: "Edit", onClickHandle: handleEdit, icon: PlayCircleIcon },
     isLoggedIn
       ? { name: "Logout", onClickHandle: logoutHandel, icon: XMarkIcon }
       : { name: "Log in", onClickHandle: handleLogin, icon: XMarkIcon },
@@ -70,8 +106,19 @@ function Header() {
               transition
               className="absolute top-full -right-4 z-50 mt-1 w-screen max-w-sm overflow-hidden rounded-l bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
             >
-              {isLoggedIn ? (
-                <>{tempUser?.email}</>
+              {isLoggedIn && tempUser?.email ? (
+                <>
+                  {!edit ? (
+                    tempUser?.email
+                  ) : (
+                    <form onSubmit={handleUpdateUser}>
+                      <input placeholder="Enter Name" name={"name"} value={formValues.name} onChange={onChangeHandle}/>
+                      <input placeholder="Enter ImageURL" name={"url"}  value={formValues.url} onChange={onChangeHandle}/>
+                      <input placeholder="Enter Email" name={"email"}  value={formValues.email} onChange={onChangeHandle}/>
+                      <button type="submit" className="bg-red-900 border-b-black">Save</button>
+                    </form>
+                  )}
+                </>
               ) : (
                 <>First LoggedIn</>
               )}

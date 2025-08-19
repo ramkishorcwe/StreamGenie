@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Movie = ({ movie, className="" }: any) => {
   const size = "w342"; // larger than w185 for better quality
   const clickHandle = async(id:String)=>{
@@ -10,7 +12,8 @@ const Movie = ({ movie, className="" }: any) => {
     }
   }
   return (
-    <div 
+    <Link 
+    to={`/video-player/${movie.id}`}
     onClick={()=>clickHandle(movie.id)}
     className={`w-[400] p-4 m-2 shadow-md bg-white rounded-md dark:bg-neutral-900 hover:z-1150 hover:bg-gray-600 hover:cursor-pointer hover:text-black hover:scale-115 hover:shadow-lg hover:border-gray-700 cursor-pointer ${className}`}>
       {/* Poster Image */}
@@ -29,7 +32,7 @@ const Movie = ({ movie, className="" }: any) => {
           {movie.release_date}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

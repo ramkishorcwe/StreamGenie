@@ -48,15 +48,20 @@ import { useSelector } from "react-redux";
 import Pagination from "./pagination";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import type { IStore } from "../store/store";
+// import type { IStore } from "../store/store";
+const location: any[] = window.location.pathname.split("/");
+
 
 
 const AllMovie = () => {
   const { pathname } = useLocation();
-  const category = pathname.split("/").pop();
+  const category: string | undefined = pathname.split("/").pop();
 
+  if (!category) return <div className="text-center text-white">Category not found</div>;
+
+  // const allMovies = useSelector((store: IStore) => store.movies[category]);
   const allMovies = useSelector(
-    (store: IStore) => store.movies[category]
+    (store: any) => store.movies[location[location.length - 1]]
   );
 
   const [isShowAll, setIsShowAll] = useState(false);

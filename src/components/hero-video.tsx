@@ -9,8 +9,8 @@ const HeroVideo = ({ id, title, description }: any) => {
       src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&loop=1`}
       //   frameborder="0"
       allow="autoplay; encrypted-media"
-    //   allowfullscreen
-    // className="border: none aspect-video w-[95%] h-7/12"
+      //   allowfullscreen
+      className="mb-30 rounded-lg"
     />
     <div className="w-6 absolute top-3/5 left-10">
       <p className="text-white font-bold">{title}</p>
@@ -37,14 +37,14 @@ const videos = [
     description: 'Join the journey as heroes rise and face challenges in an epic world full of surprises and action.',
   },
   {
-    id: 'dQw4w9WgXcQ',
-    title: 'Unexpected Twist',
-    description: 'A surprising turn of events changes everything. Get ready for a story you didn’t see coming.',
+    id: "aqz-KE-bpKQ", // 4K demo video
+    title: "4K Nature Demo",
+    description: "Beautiful nature footage in ultra HD quality.",
   },
   {
-    id: 'tgbNymZ7vqY',
-    title: 'Final Showdown',
-    description: 'The ultimate battle unfolds as everything comes to a thrilling conclusion. Don’t miss the climax!',
+    id: "ScMzIvxBSi4", // Sample video
+    title: "Sample Video Clip",
+    description: "A clean sample video often used for demos.",
   },
 ];
 

@@ -77,7 +77,7 @@ const CustomSearch = ({
     setstate([...finalArr]);
   };
 
-    const handleKeyDown = (e:any) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -103,7 +103,7 @@ const CustomSearch = ({
         onKeyDown={handleKeyDown}
       />
       <button
-        className="p-4 bg-transparent text-black font-lg border-gray-400 border-2 rounded-tr-md rounded-br-md cursor-pointer  hover:bg-[rgba(67,92,97,0.1)]"
+        className="p-4 bg-transparent text-white font-lg border-gray-400 border-2 rounded-tr-md rounded-br-md cursor-pointer  hover:bg-[rgba(67,92,97,0.1)]"
         onClick={handleSearch}
       >
         {<IoSearchOutline />}

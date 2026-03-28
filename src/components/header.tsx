@@ -18,10 +18,10 @@ function Header() {
   const isLoggedIn = useSelector((state: IStore) => state.user.user?.email);
   const tempUser = useSelector((state: IStore) => state.user.user);
   const [edit, setIsEdit] = useState(false);
-  const [formValues,setFormValues] = useState({
-    name:'',
+  const [formValues, setFormValues] = useState({
+    name: '',
     url: '',
-    email:''
+    email: ''
   })
   const navigate = useNavigate();
 
@@ -33,33 +33,33 @@ function Header() {
     }
   };
 
-  const onChangeHandle = (e:any)=>{
-    setFormValues({...formValues,[e.target.name]: e.target.value})
+  const onChangeHandle = (e: any) => {
+    setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  const handleUpdateUser = async()=>{
+  const handleUpdateUser = async () => {
     const newAuth = getAuth();
-    if (newAuth.currentUser){
-        try {
-          const data = await Promise.all([updateProfile(newAuth.currentUser, {
-        displayName: formValues.name,
-        photoURL: formValues.url,
-      })])
-      await updateEmail(newAuth.currentUser,formValues.email);
-      console.log(data)
-          
-        } catch (error) {
-          console.log(error)
-        }
+    if (newAuth.currentUser) {
+      try {
+        const data = await Promise.all([updateProfile(newAuth.currentUser, {
+          displayName: formValues.name,
+          photoURL: formValues.url,
+        })])
+        await updateEmail(newAuth.currentUser, formValues.email);
+        console.log(data)
+
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
   const handleEdit = () => {
     setIsEdit(true);
     setFormValues({
-      name:tempUser?.displayName??"",
-      url: tempUser?.photoURL??"",
-      email:tempUser?.email??''
+      name: tempUser?.displayName ?? "",
+      url: tempUser?.photoURL ?? "",
+      email: tempUser?.email ?? ''
     })
 
 
@@ -112,9 +112,9 @@ function Header() {
                     tempUser?.email
                   ) : (
                     <form onSubmit={handleUpdateUser}>
-                      <input placeholder="Enter Name" name={"name"} value={formValues.name} onChange={onChangeHandle}/>
-                      <input placeholder="Enter ImageURL" name={"url"}  value={formValues.url} onChange={onChangeHandle}/>
-                      <input placeholder="Enter Email" name={"email"}  value={formValues.email} onChange={onChangeHandle}/>
+                      <input placeholder="Enter Name" name={"name"} value={formValues.name} onChange={onChangeHandle} />
+                      <input placeholder="Enter ImageURL" name={"url"} value={formValues.url} onChange={onChangeHandle} />
+                      <input placeholder="Enter Email" name={"email"} value={formValues.email} onChange={onChangeHandle} />
                       <button type="submit" className="bg-red-900 border-b-black">Save</button>
                     </form>
                   )}

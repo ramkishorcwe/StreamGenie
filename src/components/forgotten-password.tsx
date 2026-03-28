@@ -7,12 +7,12 @@ const ForgottenPassword = () => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState({ type: "", text: "" });
 
-    const handleSubmit = async (e:any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
             await sendPasswordResetEmail(auth, email);
             setMessage({ type: "success", text: "Reset link sent to your email." });
-        } catch (error:any) {
+        } catch (error: any) {
             setMessage({ type: "error", text: error.message });
         }
     };
@@ -27,11 +27,10 @@ const ForgottenPassword = () => {
 
                 {message.text && (
                     <div
-                        className={`mb-4 px-4 py-2 rounded text-sm ${
-                            message.type === "success"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
-                        }`}
+                        className={`mb-4 px-4 py-2 rounded text-sm ${message.type === "success"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                            }`}
                     >
                         {message.text}
                     </div>

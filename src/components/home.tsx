@@ -20,7 +20,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const movies: any = useSelector((store: IStore) => store.movies);
 
-  const toggleModalOpenClose = (status:boolean)=>{
+  const toggleModalOpenClose = (status: boolean) => {
     SetIsSearch(status)
   }
 
@@ -58,17 +58,30 @@ const Home = () => {
   };
 
   return (
-    // <div className="bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/7d2359a4-434f-4efa-9ff3-e9d38a8bde7f/web/IN-en-20250707-TRIFECTA-perspective_4faa9280-a2c5-4e07-aafc-a45ce43fea09_large.jpg')] opacity-100">
-    <div className="bg-[url('https://plus.unsplash.com/premium_photo-1668473366952-45f06fbf6492')] opacity-100">
+    <div className="relative min-h-screen bg-black text-white">
+
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="https://plus.unsplash.com/premium_photo-1668473366952-45f06fbf6492"
+          className="w-full h-full object-cover opacity-30"
+        />
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+
       <Header />
-      <CustomSearch  isSearch={isSearch} toggleModalOpenClose={toggleModalOpenClose}/>
+      <CustomSearch isSearch={isSearch} toggleModalOpenClose={toggleModalOpenClose} />
+
+      {/* Hero */}
       <HeroContainer />
-      <div className="w-[97%]">
+
+      {/* Movie Sections */}
+      <div className="px-6 md:px-12 -mt-20 relative z-10">
         {Object.keys(movies).map((listType: string) => (
           <MoviesList
             key={listType}
             title={listType}
-            list={movies[`${listType}`].results}
+            list={movies[listType]?.results || []}
           />
         ))}
       </div>
